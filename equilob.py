@@ -7,31 +7,35 @@ Created on Tue Aug  2 19:56:30 2022
 """
 
 class eq:
-    import numpy as np
-    def __main__(self):
-        print ("This is the plasma selfibrium dataset")
-    
-        
-
-
+    def explain(self):
+        print ("This is the plasma equlibrium dataset")
 
     def autor(self):
         print('Neutrilo')
     def author(self):
         print('Neutrilo')
-    # class numpar:
-    #     def __main__(self):
-    #         print('defino subclaseclase interna numpar')  
-    #     class solver:
-    #         def __main__(self):
-    #             print('defino clase interna solver')
+    #Definimos la estructura 
+    class numpar:
+       pass
+       class solver:
+           pass
+           class Ip_correct:
+                pass
+    class target:
+        pass
+        class param:
+            pass
+    class geom:
+        pass
+        
 
         
     def __init__(self):
-      print('okey makey')
-      self.file.id = eq_id;
-      self.file.eq_dir = '../self_files/';
-      ### =====================================
+      import numpy as np
+      # print('okey makey')
+      # self.file.id = eq_id;
+      # self.file.eq_dir = '../self_files/';
+      # ### =====================================
       
       ### =============================================================================
       ### Numerical scheme variables. Grid sizes. Solver tolerances and Max. it. number
@@ -67,7 +71,7 @@ class eq:
       ### ============================================================
       ## Definition options:  [ 'PTRANSP'   'file'   'function' ]
       self.geom.definition  = 'function'; 
-      self.geom.sepfilename = [self.file.eq_dir,'sep_curve_',self.file.id,'.dat'];
+ #    self.geom.sepfilename = [self.file.eq_dir,'sep_curve_',self.file.id,'.dat'];
       self.geom.sepfromfile = 'sep_iter.dat';
       self.geom.Nsep   = 300;
       self.geom.R0     = 2.85;
@@ -84,7 +88,7 @@ class eq:
       ### ============================================================
       Minor_Radius  = 0.6;     ## (m) Minor Radius
       Vac_Tor_Field = 2.0;    ## (T) Vacuum Toroidal Field
-      self = GS_self_Set_Scales(self,Minor_Radius,Vac_Tor_Field);
+ #   self = GS_self_Set_Scales(self,Minor_Radius,Vac_Tor_Field);
       ### ============================================================
     
       ### ===================================================
@@ -97,7 +101,7 @@ class eq:
                 
 
         
-
+ob=eq()
 #equ=selfibrium()
 #self.numpar.solver.Nmeshsize = 300
 
