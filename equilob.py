@@ -27,14 +27,19 @@ class eq:
             pass
     class geom:
         pass
+    class scales:
+        pass
+    class file:
+        pass
+    
         
 
         
-    def __init__(self):
+    def __init__(self,eq_id):
       import numpy as np
-      # print('okey makey')
-      # self.file.id = eq_id;
-      # self.file.eq_dir = '../self_files/';
+      print('okey makey')
+      self.file.id = eq_id;
+      self.file.eq_dir = '../equil_files/';
       # ### =====================================
       
       ### =============================================================================
@@ -71,7 +76,7 @@ class eq:
       ### ============================================================
       ## Definition options:  [ 'PTRANSP'   'file'   'function' ]
       self.geom.definition  = 'function'; 
- #    self.geom.sepfilename = [self.file.eq_dir,'sep_curve_',self.file.id,'.dat'];
+      self.geom.sepfilename = eq.file.eq_dir+'sep_curve_'+eq.file.id+'.dat'
       self.geom.sepfromfile = 'sep_iter.dat';
       self.geom.Nsep   = 300;
       self.geom.R0     = 2.85;
@@ -88,7 +93,13 @@ class eq:
       ### ============================================================
       Minor_Radius  = 0.6;     ## (m) Minor Radius
       Vac_Tor_Field = 2.0;    ## (T) Vacuum Toroidal Field
- #   self = GS_self_Set_Scales(self,Minor_Radius,Vac_Tor_Field);
+      self.scales.mu0  = 4.*np.pi*1e-7;     ## (kg.m/C^2)  
+      self.scales.a    = Minor_Radius;   ## (m) Minor Radius
+      self.scales.B0   = Vac_Tor_Field;  ## (T) Vacuum Toroidal Field
+      self.scales.I0   = 1.e-6*self.scales.a*self.scales.B0/self.scales.mu0; ## (MA)    Current
+      self.scales.J0   = self.scales.B0/(self.scales.mu0*self.scales.a);     ## (A/m^2) Current density
+      self.scales.Phi0 = self.scales.B0*self.scales.a**2;                      ## (Wb)    Magnetic Flux
+      self.scales.p0   = self.scales.B0**2/self.scales.mu0;                    ## (Pa)    Thermal Pressure
       ### ============================================================
     
       ### ===================================================
@@ -101,7 +112,7 @@ class eq:
                 
 
         
-ob=eq()
+ob=eq('dif_01')
 #equ=selfibrium()
 #self.numpar.solver.Nmeshsize = 300
 
