@@ -49,6 +49,7 @@ class eq:
         
     def __init__(self,eq_id):
       import numpy as np
+      import netCDF4 as nc
       print('okey makey') #Nobody could hate this
       self.file.id = eq_id;
       self.file.eq_dir = '../equil_files/';
@@ -124,13 +125,17 @@ class eq:
       
       def getdata(self,file):
           lablist=["150320W04","154692W02","154358W03","154359W02","147394S01","147634S01","155543W09"]
-          if type(file) == int & size(file) in range(0,7):
+          if type(file) == int & len(file) in range(0,7):
               file=lablist(file)
-          elif type(file) == int & size(file) not in range(0,7):
+          elif type(file) == int & len(file) not in range(0,7):
               print('If you are typing an int input, it mush be between 0 and 6')
           elif type(file) == str & file not in lablist:
               print('If you are typing an string as input, it must be in the next list:')
               print('Valid data ID list: ', lablist)
+          fname=file+'.cdf'
+          dataobj=nc.Dataset(fname,'r',format="NETCDF4")
+          #Time
+          self.ptransp.disch.t    = dataobj['/TIME']        # (s)
               
               
                 
