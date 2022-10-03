@@ -70,21 +70,13 @@ if style == 1:
         ax.grid(visible=None, which='major', axis='y')
         ax.set_title(title3)
         ax.set_ylabel(ylab2)
+        ax.set_xlabel(xlab)
         fig.add_subplot(ax)
         
         
         print(i)
         
     
-        # for j in range(3):
-        #     ax = plt.Subplot(fig, inner[j])
-        #     plt.plot(t, I0)
-        #     # t = ax.text(0.5,0.5, 'outer=%d, inner=%d' % (i, j))
-        #     # t.set_ha('center')
-        #     # ax.set_xticks([])
-        #     # ax.set_yticks([])
-        #     fig.add_subplot(ax)
-        #     # plt.plot(t, I0, 'outer=%d, inner=%d' % (i, j))
     fig.suptitle('Analisis de descargas',fontsize=20)
     fig.show()
     
@@ -131,6 +123,7 @@ elif style ==2:
         ax.plot(t, pec_tot/1e6, label = title3 + ' (MW)')
         ax.legend(loc='upper left')
         ax.grid('minor')
+        ax.set_xlabel(xlab)
         # ax.set_ylabel(ylab1)
         fig.add_subplot(ax)
         
