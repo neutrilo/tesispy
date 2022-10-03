@@ -52,9 +52,8 @@ class eq:
         
     def __init__(self,eq_id):
       import numpy as np
-      import netCDF4 as nc
       print('okey makey') #Nobody could hate this
-      self.file.id = eq_id;
+      self.file.id = eq_id; # default option 'dif_01'. I prefer to don't touch it.
       self.file.eq_dir = '../equil_files/';
       # ### =====================================
       
@@ -139,7 +138,7 @@ class eq:
            print('Valid data ID list: ', lablist)
         elif (type(file) != str) & (type(file) == int):
             print('Input must be an int or str.')
-          
+        self.run_name = file
         fname=file+'.CDF'
         dataobj=nc.Dataset(fname,'r',format="NETCDF4")
         #Time
@@ -149,12 +148,20 @@ class eq:
         ## Evolution of some variables
         self.ptransp.disch.Ip   = np.array(dataobj['PCUR'])*1.e-6  # (MA)
         self.ptransp.disch.q0   = np.array(dataobj['Q0'])
+        
+        ## Potencia de ciclotron
         self.ptransp.disch.pec1 = np.array(dataobj['PECIN1'])
         self.ptransp.disch.pec2 = np.array(dataobj['PECIN2'])
         self.ptransp.disch.pec3 = np.array(dataobj['PECIN3'])
         self.ptransp.disch.pec4 = np.array(dataobj['PECIN4'])
         self.ptransp.disch.pec5 = np.array(dataobj['PECIN5'])
         self.ptransp.disch.pec6 = np.array(dataobj['PECIN6'])
+        self.ptransp.disch.pec_tot = np.zeros(self.ptransp.disch.pec6.shape)
+        for i in range(1,7):
+            self.ptransp.disch.pec_tot = (self.ptransp.disch.pec_tot +
+                                          eval('self.ptransp.disch.pec'+str(i)))
+        
+        ##Potencia de haces de neutrones
         self.ptransp.disch.pnb1 = np.array(dataobj['PINJ01'])
         self.ptransp.disch.pnb2 = np.array(dataobj['PINJ02'])
         self.ptransp.disch.pnb3 = np.array(dataobj['PINJ03'])
@@ -169,6 +176,11 @@ class eq:
         self.ptransp.disch.pnb12 = np.array(dataobj['PINJ12'])
         self.ptransp.disch.pnb13 = np.array(dataobj['PINJ13'])
         self.ptransp.disch.pnb14 = np.array(dataobj['PINJ14'])
+        self.ptransp.disch.pnb_tot = np.zeros(self.ptransp.disch.pnb14.shape)
+        for i in range(1,15):
+            self.ptransp.disch.pnb_tot = (self.ptransp.disch.pnb_tot +
+                                          eval('self.ptransp.disch.pnb'+str(i)))
+            
         #print(nit)
         #print(np.shape(np.array(dataobj['Q'])))
         self.ptransp.disch.qmin = np.zeros(nit)
@@ -190,12 +202,70 @@ class eq:
             print('time_slice variable must be a number or just nothing')
         time_slice=max(time_slice,min(self.ptransp.disch.t))
         time_slice=min(time_slice,max(self.ptransp.disch.t))
+    
+    def caracterize(self,language ='eng'):
+        import matplotlib.pyplot as plt
+        t=self.ptransp.disch.t
+        I0 = self.ptransp.disch.Ip
+        pnb_tot = self.ptransp.disch.pnb_tot
+        pec_tot = self.ptransp.disch.pec_tot
+        
+        tittle_main = 'Experimental run ' + self.run_name
+        title1 = 'Total current'
+        title2 = 'Total neutrol beams power'
+        title3 = 'Total cyclotron power'
+        xlab = 'Time (s)'
+        ylab1 = 'Current (MA)'
+        ylab2 = 'Power (MW)'
+        
+        if language =='eng':
+            pass
+        elif language =='esp':
+            tittle_main = 'Corrida experimental ' + self.run_name
+            title1 = 'Corriente total del plasma'
+            title2 = 'Potencia total de los haces de neutrones'
+            title3 = 'Potencia total de radiacion de ciclotron'
+            xlab = 'Tiempo (s)'
+            ylab1 = 'Corriente (MA)'
+            ylab2 = 'Potencia (MW)'
+        else:
+            print('You must select a valid language or none.')
+            print('Valid languages are "eng" and "esp"')
+       
+        fig, axs = plt.subplots(3, 1, constrained_layout=True)
+        plt.subplot(3, 1, 1)
+        plt.title(title1)
+        #plt.xlabel(xlab)
+        plt.ylabel(ylab1)
+        plt.grid()
+        plt.plot(t, I0)
+        plt.subplot(3, 1, 2)
+        plt.title(title2)
+        #plt.xlabel(xlab)
+        plt.ylabel(ylab2)
+        plt.grid()
+        plt.plot(t, pnb_tot/1e6)
+        plt.subplot(3, 1, 3)
+        plt.title(title3)
+        plt.plot(t, pec_tot/1e6) 
+        plt.xlabel(xlab)
+        plt.ylabel(ylab2)
+        plt.grid()
+        # plt.subplots_adjust(left=0.2,
+        #             bottom=0.2,
+        #             right=0.9,
+        #             top=1.3,
+        #             wspace=0.2,
+        #             hspace=0.4)
+        fig.suptitle(tittle_main, fontsize=16)
+        plt.show()
+        
         
                 
-
-        
-ob=eq('dif_01')
-ob.getdata(0)
-#equ=selfibrium()
-#self.numpar.solver.Nmeshsize = 300
-
+test = 0
+if test == 1:
+    ob=eq('dif_01')
+    ob.getdata(0)
+    ob.caracterize('esp')
+    #equ=selfibrium()
+    #self.numpar.solver.Nmeshsize = 300
