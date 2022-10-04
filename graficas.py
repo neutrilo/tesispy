@@ -97,7 +97,7 @@ elif style ==2:
         
         #Data extraction
         equilibrio.getdata(i)
-        tittle_main = 'Corrida experimental ' + equilibrio.run_name 
+        tittle_main = 'Decarga experimental ' + equilibrio.run_name 
         t = equilibrio.ptransp.disch.t
         I0 = equilibrio.ptransp.disch.Ip
         pnb_tot = equilibrio.ptransp.disch.pnb_tot
